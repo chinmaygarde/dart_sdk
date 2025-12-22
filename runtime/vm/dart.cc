@@ -1138,6 +1138,8 @@ char* Dart::FeaturesString(IsolateGroup* isolate_group,
     buffer.AddString(" linux");
 #elif defined(DART_TARGET_OS_WINDOWS)
     buffer.AddString(" windows");
+#elif defined(DART_TARGET_OS_QNX)
+    buffer.AddString(" qnx");
 #else
 #error What operating system?
 #endif

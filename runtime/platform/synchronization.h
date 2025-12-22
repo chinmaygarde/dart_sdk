@@ -18,7 +18,8 @@ namespace dart {
 using MutexImpl = absl::Mutex;
 using ConditionVariableImpl = absl::CondVar;
 #elif defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_FUCHSIA) ||          \
-    defined(DART_HOST_OS_MACOS) || defined(DART_HOST_OS_ANDROID)
+    defined(DART_HOST_OS_MACOS) || defined(DART_HOST_OS_ANDROID) ||            \
+    defined(DART_HOST_OS_QNX)
 using MutexImpl = pthread_mutex_t;
 using ConditionVariableImpl = pthread_cond_t;
 #elif defined(DART_HOST_OS_WINDOWS)

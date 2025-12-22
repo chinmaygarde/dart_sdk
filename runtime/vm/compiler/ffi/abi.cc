@@ -61,6 +61,8 @@ static_assert(offsetof(AbiAlignmentUint64, i) == 8,
 #endif
 #elif defined(DART_TARGET_OS_WINDOWS)
 #define DART_TARGET_OS_NAME Windows
+#elif defined(DART_TARGET_OS_QNX)
+#define DART_TARGET_OS_NAME QNX
 #else
 #error Unknown OS
 #endif

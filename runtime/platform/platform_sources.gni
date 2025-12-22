@@ -48,5 +48,6 @@ platform_sources = [
   "utils_fuchsia.cc",
   "utils_linux.cc",
   "utils_macos.cc",
+  "utils_qnx.cc",
   "utils_win.cc",
 ]

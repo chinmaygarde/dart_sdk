@@ -8,7 +8,7 @@
 #include "platform/globals.h"
 
 #if defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_MACOS) ||              \
-    defined(DART_HOST_OS_ANDROID)
+    defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_QNX)
 #include <dlfcn.h>
 #include <libgen.h>
 #elif defined(DART_HOST_OS_FUCHSIA)
@@ -360,7 +360,8 @@ void* Utils::ResolveSymbolInDynamicLibrary(void* library_handle,
                                            const char* symbol,
                                            char** error) {
 #if defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_MACOS) ||              \
-    defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_FUCHSIA)
+    defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_FUCHSIA) ||          \
+    defined(DART_HOST_OS_QNX)
   dlerror();  // Clear any errors.
   void* result = dlsym(library_handle, symbol);
   // Note: nullptr might be a valid return from dlsym. Must call dlerror

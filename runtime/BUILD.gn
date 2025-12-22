@@ -145,6 +145,8 @@ config("dart_os_config") {
     defines += [ "DART_TARGET_OS_MACOS" ]
   } else if (target_os == "win") {
     defines += [ "DART_TARGET_OS_WINDOWS" ]
+  } else if (target_os == "qnx") {
+    defines += [ "DART_TARGET_OS_QNX" ]
   } else if (target_os == "winuwp") {
     defines += [
       "DART_TARGET_OS_WINDOWS",

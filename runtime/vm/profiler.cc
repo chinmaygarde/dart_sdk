@@ -1430,7 +1430,8 @@ void ReleaseToCurrentBlock(Isolate* isolate) {
   // special treatment for thread_suspend/resume.
   SampleBlock* block = isolate->current_sample_block();
   isolate->exchange_current_sample_block(block);
-#elif defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_ANDROID)
+#elif defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_ANDROID) ||          \
+    defined(DART_HOST_OS_QNX)
   // The sample is collected by a signal handler on the same thread being
   // sampled.
 #else

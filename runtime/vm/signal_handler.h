@@ -8,7 +8,7 @@
 #include "vm/allocation.h"
 #include "vm/globals.h"
 
-#if defined(DART_HOST_OS_LINUX)
+#if defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_QNX)
 #include <signal.h>    // NOLINT
 #include <ucontext.h>  // NOLINT
 #elif defined(DART_HOST_OS_ANDROID)

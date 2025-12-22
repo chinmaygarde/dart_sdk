@@ -9,7 +9,8 @@
 // Declare the OS-specific types ahead of defining the generic class.
 #if defined(DART_HOST_OS_FUCHSIA)
 #include "bin/socket_base_fuchsia.h"
-#elif defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_ANDROID)
+#elif defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_ANDROID) ||          \
+    defined(DART_HOST_OS_QNX)
 #include "bin/socket_base_linux.h"
 #elif defined(DART_HOST_OS_MACOS)
 #include "bin/socket_base_macos.h"

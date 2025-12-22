@@ -22,7 +22,7 @@ import("native_assets_impl_sources.gni")
 config("libdart_builtin_config") {
   if (is_win) {
     libs = [ "bcrypt.lib" ]
-  } else {
+  } else if (!is_qnx) {
     libs = [ "dl" ]
   }
   if (is_android) {

@@ -28,6 +28,8 @@
 #include "vm/os_thread_macos.h"
 #elif defined(DART_HOST_OS_WINDOWS)
 #include "vm/os_thread_win.h"
+#elif defined(DART_HOST_OS_QNX)
+#include "vm/os_thread_linux.h"
 #else
 #error Unknown target os.
 #endif

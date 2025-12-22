@@ -129,6 +129,10 @@
 #define DART_HOST_OS_SIMULATOR 1
 #endif
 
+#elif defined(__QNX__)
+
+#define DART_HOST_OS_QNX 1
+
 #elif defined(_WIN32)
 
 // Windows, both 32- and 64-bit, regardless of the check for _WIN32.
@@ -406,7 +410,8 @@ struct simd128_value_t {
 
 #if !defined(DART_TARGET_OS_ANDROID) && !defined(DART_TARGET_OS_FUCHSIA) &&    \
     !defined(DART_TARGET_OS_MACOS_IOS) && !defined(DART_TARGET_OS_LINUX) &&    \
-    !defined(DART_TARGET_OS_MACOS) && !defined(DART_TARGET_OS_WINDOWS)
+    !defined(DART_TARGET_OS_MACOS) && !defined(DART_TARGET_OS_WINDOWS) &&      \
+    !defined(DART_TARGET_OS_QNX)
 // No target OS specified; pick the one matching the host OS.
 #if defined(DART_HOST_OS_ANDROID)
 #define DART_TARGET_OS_ANDROID 1
@@ -421,6 +426,8 @@ struct simd128_value_t {
 #define DART_TARGET_OS_MACOS 1
 #elif defined(DART_HOST_OS_WINDOWS)
 #define DART_TARGET_OS_WINDOWS 1
+#elif defined(DART_HOST_OS_QNX)
+#define DART_TARGET_OS_QNX 1
 #else
 #error Automatic target OS detection failed.
 #endif
@@ -753,6 +760,8 @@ DART_FORCE_INLINE D bit_copy(const S& source) {
 #define kHostOperatingSystemName "macos"
 #elif defined(DART_HOST_OS_WINDOWS)
 #define kHostOperatingSystemName "windows"
+#elif defined(DART_HOST_OS_QNX)
+#define kHostOperatingSystemName "qnx"
 #else
 #error Host operating system detection failed.
 #endif
@@ -805,6 +814,8 @@ DART_FORCE_INLINE D bit_copy(const S& source) {
 #define kTargetOperatingSystemName "macos"
 #elif defined(DART_TARGET_OS_WINDOWS)
 #define kTargetOperatingSystemName "windows"
+#elif defined(DART_TARGET_OS_QNX)
+#define kTargetOperatingSystemName "qnx"
 #else
 #error Target operating system detection failed.
 #endif

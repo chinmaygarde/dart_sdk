@@ -492,13 +492,15 @@ class Utils {
 #ifdef __GNUC__
   __attribute__((no_sanitize("float-divide-by-zero")))
 #endif
-  static inline float DivideAllowZero(float a, float b) {
+  static inline float
+  DivideAllowZero(float a, float b) {
     return a / b;
   }
 #ifdef __GNUC__
   __attribute__((no_sanitize("float-divide-by-zero")))
 #endif
-  static inline double DivideAllowZero(double a, double b) {
+  static inline double
+  DivideAllowZero(double a, double b) {
     return a / b;
   }
 
@@ -712,6 +714,8 @@ class Utils {
 #include "platform/utils_macos.h"
 #elif defined(DART_HOST_OS_WINDOWS)
 #include "platform/utils_win.h"
+#elif defined(DART_HOST_OS_QNX)
+#include "platform/utils_qnx.h"
 #else
 #error Unknown target os.
 #endif

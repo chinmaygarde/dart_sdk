@@ -20,6 +20,7 @@ builtin_impl_sources = [
   "directory_fuchsia.cc",
   "directory_linux.cc",
   "directory_macos.cc",
+  "directory_qnx.cc",
   "directory_win.cc",
   "exe_utils.cc",
   "exe_utils.h",

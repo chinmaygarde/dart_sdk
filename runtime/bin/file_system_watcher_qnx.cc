@@ -48,4 +48,4 @@ intptr_t FileSystemWatcher::WatchPath(intptr_t id,
 }  // namespace bin
 }  // namespace dart
 
-#endif  // defined(DART_HOST_OS_FUCHSIA)
+#endif  // defined(DART_HOST_OS_QNX)

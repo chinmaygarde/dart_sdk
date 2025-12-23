@@ -29,7 +29,7 @@
 #elif defined(DART_HOST_OS_WINDOWS)
 #include "vm/os_thread_win.h"
 #elif defined(DART_HOST_OS_QNX)
-#include "vm/os_thread_linux.h"
+#include "vm/os_thread_qnx.h"
 #else
 #error Unknown target os.
 #endif

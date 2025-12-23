@@ -213,6 +213,7 @@ vm_sources = [
   "os_fuchsia.cc",
   "os_linux.cc",
   "os_macos.cc",
+  "os_qnx.cc",
   "os_thread.cc",
   "os_thread.h",
   "os_thread_absl.cc",

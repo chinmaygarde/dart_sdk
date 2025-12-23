@@ -33,6 +33,7 @@ builtin_impl_sources = [
   "file_fuchsia.cc",
   "file_linux.cc",
   "file_macos.cc",
+  "file_qnx.cc",
   "file_support.cc",
   "file_win.cc",
   "file_win.h",

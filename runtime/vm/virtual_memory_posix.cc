@@ -4,7 +4,12 @@
 
 #include "vm/globals.h"
 #if defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_LINUX) ||            \
-    defined(DART_HOST_OS_MACOS)
+    defined(DART_HOST_OS_MACOS) || defined(DART_HOST_OS_QNX)
+
+#if defined(DART_HOST_OS_QNX)
+// For MAP_NORESERVE
+#define __EXT_UNIX_HIST
+#endif  // defined(DART_HOST_OS_QNX)
 
 #include "vm/virtual_memory.h"
 
@@ -12,8 +17,11 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-#include <sys/syscall.h>
 #include <unistd.h>
+
+#if !defined(DART_HOST_OS_QNX)
+#include <sys/syscall.h>
+#endif  // defined(DART_HOST_OS_QNX)
 
 #if defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_LINUX)
 #include <sys/prctl.h>
@@ -48,6 +56,11 @@
 #else
 #define LOG_INFO(msg, ...)
 #endif  // defined(VIRTUAL_MEMORY_LOGGING)
+
+#if defined(DART_HOST_OS_QNX)
+#define madvise posix_madvise
+#define MADV_DONTNEED POSIX_MADV_DONTNEED
+#endif  // defined(DART_HOST_OS_QNX)
 
 namespace dart {
 

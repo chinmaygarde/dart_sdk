@@ -4,7 +4,8 @@
 
 #include "vm/globals.h"
 #if defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_FUCHSIA) ||          \
-    defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_MACOS)
+    defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_MACOS) ||              \
+    defined(DART_HOST_OS_QNX)
 
 #include "platform/memory_sanitizer.h"
 #include "vm/native_symbol.h"

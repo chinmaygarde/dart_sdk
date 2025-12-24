@@ -46,6 +46,7 @@ io_impl_sources = [
   "platform_linux.cc",
   "platform_macos.cc",
   "platform_macos.h",
+  "platform_qnx.cc",
   "platform_win.cc",
   "process.cc",
   "process.h",

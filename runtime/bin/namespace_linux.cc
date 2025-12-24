@@ -3,7 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 #include "platform/globals.h"
-#if defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_ANDROID)
+#if defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_ANDROID) ||            \
+    defined(DART_HOST_OS_QNX)
 
 #include "bin/namespace.h"
 
@@ -13,6 +14,10 @@
 #include "bin/file.h"
 #include "platform/signal_blocker.h"
 #include "platform/text_buffer.h"
+
+#if defined(DART_HOST_OS_QNX)
+#define openat64 openat
+#endif
 
 namespace dart {
 namespace bin {

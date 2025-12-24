@@ -75,7 +75,7 @@ void PathBuffer::Reset(intptr_t new_length) {
 // A linked list of symbolic links, with their unique file system identifiers.
 // These are scanned to detect loops while doing a recursive directory listing.
 struct LinkList {
-  decltype(stat64::st_dev) dev;
+  decltype(stat::st_dev) dev;
   ino64_t ino;
   LinkList* next;
 };
@@ -241,9 +241,9 @@ static bool DeleteDir(int dirfd, char* dir_name, PathBuffer* path) {
 static bool DeleteRecursively(int dirfd, PathBuffer* path) {
   // Do not recurse into links for deletion. Instead delete the link.
   // If it's a file, delete it.
-  struct stat64 st;
+  struct stat st;
   if (TEMP_FAILURE_RETRY(
-          fstatat64(dirfd, path->AsString(), &st, AT_SYMLINK_NOFOLLOW)) == -1) {
+          fstatat(dirfd, path->AsString(), &st, AT_SYMLINK_NOFOLLOW)) == -1) {
     return false;
   } else if (!S_ISDIR(st.st_mode)) {
     return (NO_RETRY_EXPECTED(unlinkat(dirfd, path->AsString(), 0)) == 0);
@@ -333,9 +333,8 @@ static bool DeleteRecursively(int dirfd, PathBuffer* path) {
 Directory::ExistsResult Directory::Exists(Namespace* namespc,
                                           const char* dir_name) {
   NamespaceScope ns(namespc, dir_name);
-  struct stat64 entry_info;
-  int success =
-      TEMP_FAILURE_RETRY(fstatat64(ns.fd(), ns.path(), &entry_info, 0));
+  struct stat entry_info;
+  int success = TEMP_FAILURE_RETRY(fstatat(ns.fd(), ns.path(), &entry_info, 0));
   if (success == 0) {
     if (S_ISDIR(entry_info.st_mode)) {
       return EXISTS;

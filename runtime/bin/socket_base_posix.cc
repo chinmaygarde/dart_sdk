@@ -4,7 +4,7 @@
 
 #include "platform/globals.h"
 #if defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_LINUX) ||            \
-    defined(DART_HOST_OS_MACOS)
+    defined(DART_HOST_OS_MACOS) || defined(DART_HOST_OS_QNX)
 #include "bin/socket_base.h"
 
 #include <errno.h>        // NOLINT

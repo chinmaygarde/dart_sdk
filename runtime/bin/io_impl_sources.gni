@@ -16,6 +16,8 @@ io_impl_sources = [
   "eventhandler_linux.h",
   "eventhandler_macos.cc",
   "eventhandler_macos.h",
+  "eventhandler_qnx.cc",
+  "eventhandler_qnx.h",
   "eventhandler_win.cc",
   "eventhandler_win.h",
   "file_system_watcher.cc",

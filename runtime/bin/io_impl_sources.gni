@@ -55,6 +55,7 @@ io_impl_sources = [
   "process_fuchsia.cc",
   "process_linux.cc",
   "process_macos.cc",
+  "process_qnx.cc",
   "process_win.cc",
   "reference_counting.h",
   "root_certificates_unsupported.cc",

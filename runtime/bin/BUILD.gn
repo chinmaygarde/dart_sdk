@@ -587,7 +587,7 @@ template("dart_io") {
       ]
     }
 
-    if (is_linux || is_win || is_fuchsia) {
+    if (is_linux || is_win || is_fuchsia || is_qnx) {
       if (dart_use_fallback_root_certificates) {
         deps += [ "../../third_party/fallback_root_certificates" ]
       } else {

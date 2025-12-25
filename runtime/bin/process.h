@@ -367,7 +367,8 @@ class BufferListBase {
 };
 
 #if defined(DART_HOST_OS_ANDROID) || defined(DART_HOST_OS_FUCHSIA) ||          \
-    defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_MACOS)
+    defined(DART_HOST_OS_LINUX) || defined(DART_HOST_OS_MACOS) ||              \
+    defined(DART_HOST_OS_QNX)
 class BufferList : public BufferListBase {
  public:
   BufferList() {}

@@ -12,6 +12,7 @@ builtin_impl_sources = [
   "crypto_fuchsia.cc",
   "crypto_linux.cc",
   "crypto_macos.cc",
+  "crypto_qnx.cc",
   "crypto_win.cc",
   "dartutils.cc",
   "dartutils.h",

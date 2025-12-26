@@ -210,8 +210,8 @@ bool File::Lock(File::LockType lock, int64_t start, int64_t end) {
 
 int64_t File::Length() {
   ASSERT(handle_->fd() >= 0);
-  struct stat64 st;
-  if (TEMP_FAILURE_RETRY(fstat64(handle_->fd(), &st)) == 0) {
+  struct stat st;
+  if (TEMP_FAILURE_RETRY(fstat(handle_->fd(), &st)) == 0) {
     return st.st_size;
   }
   return -1;
@@ -232,8 +232,8 @@ File* File::Open(Namespace* namespc,
                  bool executable) {
   NamespaceScope ns(namespc, name);
   // Report errors for non-regular files.
-  struct stat64 st;
-  if (TEMP_FAILURE_RETRY(fstatat64(ns.fd(), ns.path(), &st, 0)) == 0) {
+  struct stat st;
+  if (TEMP_FAILURE_RETRY(fstatat(ns.fd(), ns.path(), &st, 0)) == 0) {
     // Only accept regular files, character devices, and pipes.
     if (!S_ISREG(st.st_mode) && !S_ISCHR(st.st_mode) && !S_ISFIFO(st.st_mode)) {
       errno = (S_ISDIR(st.st_mode)) ? EISDIR : ENOENT;
@@ -295,8 +295,8 @@ File* File::OpenStdio(int fd) {
 
 bool File::Exists(Namespace* namespc, const char* name) {
   NamespaceScope ns(namespc, name);
-  struct stat64 st;
-  if (TEMP_FAILURE_RETRY(fstatat64(ns.fd(), ns.path(), &st, 0)) == 0) {
+  struct stat st;
+  if (TEMP_FAILURE_RETRY(fstatat(ns.fd(), ns.path(), &st, 0)) == 0) {
     // Everything but a directory and a link is a file to Dart.
     return !S_ISDIR(st.st_mode) && !S_ISLNK(st.st_mode);
   } else {
@@ -326,8 +326,8 @@ bool File::Create(Namespace* namespc, const char* name, bool exclusive) {
   // call has created a file or that a file already exists if there is already
   // an entity at the same path that is a directory or a link.
   bool is_file = true;
-  struct stat64 st;
-  if (TEMP_FAILURE_RETRY(fstat64(fd, &st)) == 0) {
+  struct stat st;
+  if (TEMP_FAILURE_RETRY(fstat(fd, &st)) == 0) {
     if (S_ISDIR(st.st_mode)) {
       errno = EISDIR;
       is_file = false;
@@ -362,14 +362,14 @@ File::Type File::GetType(Namespace* namespc,
                          const char* name,
                          bool follow_links) {
   NamespaceScope ns(namespc, name);
-  struct stat64 entry_info;
+  struct stat entry_info;
   int stat_success;
   if (follow_links) {
     stat_success =
-        TEMP_FAILURE_RETRY(fstatat64(ns.fd(), ns.path(), &entry_info, 0));
+        TEMP_FAILURE_RETRY(fstatat(ns.fd(), ns.path(), &entry_info, 0));
   } else {
     stat_success = TEMP_FAILURE_RETRY(
-        fstatat64(ns.fd(), ns.path(), &entry_info, AT_SYMLINK_NOFOLLOW));
+        fstatat(ns.fd(), ns.path(), &entry_info, AT_SYMLINK_NOFOLLOW));
   }
   if (stat_success == -1) {
     return File::kDoesNotExist;
@@ -467,8 +467,8 @@ bool File::Copy(Namespace* namespc,
     return false;
   }
   NamespaceScope oldns(namespc, old_path);
-  struct stat64 st;
-  if (TEMP_FAILURE_RETRY(fstatat64(oldns.fd(), oldns.path(), &st, 0)) != 0) {
+  struct stat st;
+  if (TEMP_FAILURE_RETRY(fstatat(oldns.fd(), oldns.path(), &st, 0)) != 0) {
     return false;
   }
   const int old_fd = TEMP_FAILURE_RETRY(
@@ -509,11 +509,9 @@ bool File::Copy(Namespace* namespc,
   return true;
 }
 
-static bool StatHelper(Namespace* namespc,
-                       const char* name,
-                       struct stat64* st) {
+static bool StatHelper(Namespace* namespc, const char* name, struct stat* st) {
   NamespaceScope ns(namespc, name);
-  if (TEMP_FAILURE_RETRY(fstatat64(ns.fd(), ns.path(), st, 0)) != 0) {
+  if (TEMP_FAILURE_RETRY(fstatat(ns.fd(), ns.path(), st, 0)) != 0) {
     return false;
   }
   // Signal an error if it's a directory.
@@ -526,7 +524,7 @@ static bool StatHelper(Namespace* namespc,
 }
 
 int64_t File::LengthFromPath(Namespace* namespc, const char* name) {
-  struct stat64 st;
+  struct stat st;
   if (!StatHelper(namespc, name, &st)) {
     return -1;
   }
@@ -546,8 +544,8 @@ static void MillisecondsToTimespec(int64_t millis, struct timespec* t) {
 
 void File::Stat(Namespace* namespc, const char* name, int64_t* data) {
   NamespaceScope ns(namespc, name);
-  struct stat64 st;
-  if (TEMP_FAILURE_RETRY(fstatat64(ns.fd(), ns.path(), &st, 0)) == 0) {
+  struct stat st;
+  if (TEMP_FAILURE_RETRY(fstatat(ns.fd(), ns.path(), &st, 0)) == 0) {
     if (S_ISREG(st.st_mode)) {
       data[kType] = kIsFile;
     } else if (S_ISDIR(st.st_mode)) {
@@ -572,7 +570,7 @@ void File::Stat(Namespace* namespc, const char* name, int64_t* data) {
 }
 
 time_t File::LastModified(Namespace* namespc, const char* name) {
-  struct stat64 st;
+  struct stat st;
   if (!StatHelper(namespc, name, &st)) {
     return -1;
   }
@@ -580,7 +578,7 @@ time_t File::LastModified(Namespace* namespc, const char* name) {
 }
 
 time_t File::LastAccessed(Namespace* namespc, const char* name) {
-  struct stat64 st;
+  struct stat st;
   if (!StatHelper(namespc, name, &st)) {
     return -1;
   }
@@ -591,7 +589,7 @@ bool File::SetLastAccessed(Namespace* namespc,
                            const char* name,
                            int64_t millis) {
   // First get the current times.
-  struct stat64 st;
+  struct stat st;
   if (!StatHelper(namespc, name, &st)) {
     return false;
   }
@@ -608,7 +606,7 @@ bool File::SetLastModified(Namespace* namespc,
                            const char* name,
                            int64_t millis) {
   // First get the current times.
-  struct stat64 st;
+  struct stat st;
   if (!StatHelper(namespc, name, &st)) {
     return false;
   }
@@ -626,9 +624,9 @@ const char* File::LinkTarget(Namespace* namespc,
                              char* dest,
                              int dest_size) {
   NamespaceScope ns(namespc, name);
-  struct stat64 link_stats;
+  struct stat link_stats;
   const int status = TEMP_FAILURE_RETRY(
-      fstatat64(ns.fd(), ns.path(), &link_stats, AT_SYMLINK_NOFOLLOW));
+      fstatat(ns.fd(), ns.path(), &link_stats, AT_SYMLINK_NOFOLLOW));
   if (status != 0) {
     return nullptr;
   }
@@ -668,8 +666,8 @@ intptr_t File::ReadLinkInto(const char* pathname,
                             size_t result_size) {
   ASSERT(pathname != nullptr);
   ASSERT(IsAbsolutePath(pathname));
-  struct stat64 link_stats;
-  if (TEMP_FAILURE_RETRY(lstat64(pathname, &link_stats)) != 0) {
+  struct stat link_stats;
+  if (TEMP_FAILURE_RETRY(lstat(pathname, &link_stats)) != 0) {
     return -1;
   }
   if (!S_ISLNK(link_stats.st_mode)) {
@@ -742,8 +740,8 @@ const char* File::StringEscapedPathSeparator() {
 }
 
 File::StdioHandleType File::GetStdioHandleType(int fd) {
-  struct stat64 buf;
-  int result = TEMP_FAILURE_RETRY(fstat64(fd, &buf));
+  struct stat buf;
+  int result = TEMP_FAILURE_RETRY(fstat(fd, &buf));
   if (result == -1) {
     return kTypeError;
   }
@@ -766,13 +764,13 @@ File::Identical File::AreIdentical(Namespace* namespc_1,
                                    const char* file_1,
                                    Namespace* namespc_2,
                                    const char* file_2) {
-  struct stat64 file_1_info;
-  struct stat64 file_2_info;
+  struct stat file_1_info;
+  struct stat file_2_info;
   int status;
   {
     NamespaceScope ns1(namespc_1, file_1);
     status = TEMP_FAILURE_RETRY(
-        fstatat64(ns1.fd(), ns1.path(), &file_1_info, AT_SYMLINK_NOFOLLOW));
+        fstatat(ns1.fd(), ns1.path(), &file_1_info, AT_SYMLINK_NOFOLLOW));
     if (status == -1) {
       return File::kError;
     }
@@ -780,7 +778,7 @@ File::Identical File::AreIdentical(Namespace* namespc_1,
   {
     NamespaceScope ns2(namespc_2, file_2);
     status = TEMP_FAILURE_RETRY(
-        fstatat64(ns2.fd(), ns2.path(), &file_2_info, AT_SYMLINK_NOFOLLOW));
+        fstatat(ns2.fd(), ns2.path(), &file_2_info, AT_SYMLINK_NOFOLLOW));
     if (status == -1) {
       return File::kError;
     }

@@ -8,15 +8,18 @@
 #include "bin/eventhandler.h"
 #include "bin/eventhandler_qnx.h"
 
-#include <errno.h>        // NOLINT
-#include <fcntl.h>        // NOLINT
-#include <pthread.h>      // NOLINT
-#include <stdio.h>        // NOLINT
-#include <string.h>       // NOLINT
-#include <sys/epoll.h>    // NOLINT
-#include <sys/stat.h>     // NOLINT
-#include <sys/timerfd.h>  // NOLINT
-#include <unistd.h>       // NOLINT
+#include <errno.h>      // NOLINT
+#include <fcntl.h>      // NOLINT
+#include <pthread.h>    // NOLINT
+#include <stdio.h>      // NOLINT
+#include <string.h>     // NOLINT
+#include <sys/epoll.h>  // NOLINT
+#include <sys/stat.h>   // NOLINT
+#include <unistd.h>     // NOLINT
+
+extern "C" {
+#include <sys/timerfd.h>
+}
 
 #include "bin/dartutils.h"
 #include "bin/fdutils.h"
@@ -96,7 +99,7 @@ EventHandlerImplementation::EventHandlerImplementation()
   if (status == -1) {
     FATAL("Failed adding interrupt fd to epoll instance");
   }
-  timer_fd_ = NO_RETRY_EXPECTED(timerfd_create(CLOCK_MONOTONIC, TFD_CLOEXEC));
+  timer_fd_ = NO_RETRY_EXPECTED(::timerfd_create(CLOCK_MONOTONIC, TFD_CLOEXEC));
   if (timer_fd_ == -1) {
     FATAL("Failed creating timerfd file descriptor: %i", errno);
   }
@@ -283,7 +286,7 @@ void EventHandlerImplementation::UpdateTimerFd() {
     it.it_value.tv_nsec = (millis % 1000) * 1000000;
   }
   VOID_NO_RETRY_EXPECTED(
-      timerfd_settime(timer_fd_, TFD_TIMER_ABSTIME, &it, nullptr));
+      ::timerfd_settime(timer_fd_, TFD_TIMER_ABSTIME, &it, nullptr));
 }
 
 #ifdef DEBUG_POLL

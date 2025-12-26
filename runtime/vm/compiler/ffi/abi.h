@@ -43,6 +43,7 @@ enum class Abi {
   kWindowsIA32,
   kWindowsX64,
   kQNXArm64,
+  kQNXX64,
 };
 
 const int64_t num_abis = static_cast<int64_t>(Abi::kWindowsX64) + 1;

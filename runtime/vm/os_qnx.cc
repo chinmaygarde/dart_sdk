@@ -242,6 +242,10 @@ int OS::GetTimeZoneOffsetInSeconds(int64_t seconds_since_epoch) {
   return succeeded ? static_cast<int>(decomposed.tm_gmtoff) : 0;
 }
 
+OS::BuildId OS::GetAppBuildId(const uint8_t* snapshot_instructions) {
+  return {0, nullptr};
+}
+
 }  // namespace dart
 
 #endif  // defined(DART_HOST_OS_QNX)

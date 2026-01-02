@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <sys/neutrino.h>
 #include <sys/procfs.h>
 #include <sys/resource.h>
 #include <sys/time.h>
@@ -84,7 +85,7 @@ static void* ThreadStart(void* data_ptr) {
 
   // Set the thread name. There is 16 bytes limit on the name (including \0).
   // pthread_setname_np ignores names that are too long rather than truncating.
-  char truncated_name[16];
+  char truncated_name[_NTO_THREAD_NAME_MAX - 1];
   snprintf(truncated_name, ARRAY_SIZE(truncated_name), "%s", name);
   pthread_setname_np(pthread_self(), truncated_name);
 

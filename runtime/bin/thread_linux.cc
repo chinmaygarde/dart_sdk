@@ -16,6 +16,10 @@
 #include "platform/assert.h"
 #include "platform/utils.h"
 
+#if defined(DART_HOST_OS_QNX)
+#include <sys/neutrino.h>
+#endif  // defined(DART_HOST_OS_QNX)
+
 namespace dart {
 namespace bin {
 
@@ -49,9 +53,14 @@ static void* ThreadStart(void* data_ptr) {
   uword parameter = data->parameter();
   delete data;
 
+#if defined(DART_HOST_OS_QNX)
+  char truncated_name[_NTO_THREAD_NAME_MAX - 1];
+#else   // DART_HOST_OS_QNX
   // Set the thread name. There is 16 bytes limit on the name (including \0).
   // pthread_setname_np ignores names that are too long rather than truncating.
   char truncated_name[16];
+#endif  // DART_HOST_OS_QNX
+
   snprintf(truncated_name, sizeof(truncated_name), "%s", name);
   pthread_setname_np(pthread_self(), truncated_name);
 

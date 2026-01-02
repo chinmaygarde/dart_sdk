@@ -92,9 +92,7 @@ intptr_t OS::ProcessId() {
   return static_cast<intptr_t>(getpid());
 }
 
-void OS::RegisterCodeObservers() {
-  UNIMPLEMENTED();
-}
+void OS::RegisterCodeObservers() {}
 
 void OS::PrepareToAbort() {}
 

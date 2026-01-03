@@ -85,6 +85,12 @@ class Abi {
   /// The application binary interface for Windows on the X64 architecture.
   static const windowsX64 = _windowsX64;
 
+  /// The application binary interface for QNX on the Arm64 architecture.
+  static const qnxArm64 = _qnxArm64;
+
+  /// The application binary interface for QNX on the X64 architecture.
+  static const qnxX64 = _qnxX64;
+
   /// The ABIs that the DartVM can run on.
   ///
   /// Does not contain a `macosIA32`. We have stopped supporting 32-bit MacOS.
@@ -108,6 +114,8 @@ class Abi {
     linuxRiscv64,
     macosArm64,
     macosX64,
+    qnxArm64,
+    qnxX64,
     windowsArm64,
     windowsIA32,
     windowsX64,
@@ -155,10 +163,12 @@ class Abi {
   static const _windowsArm64 = Abi._(_Architecture.arm64, _OS.windows);
   static const _windowsIA32 = Abi._(_Architecture.ia32, _OS.windows);
   static const _windowsX64 = Abi._(_Architecture.x64, _OS.windows);
+  static const _qnxArm64 = Abi._(_Architecture.arm64, _OS.qnx);
+  static const _qnxX64 = Abi._(_Architecture.x64, _OS.qnx);
 }
 
 /// The hardware architectures the Dart VM runs on.
 enum _Architecture { arm, arm64, ia32, x64, riscv32, riscv64 }
 
 /// The operating systems the Dart VM runs on.
-enum _OS { android, fuchsia, ios, linux, macos, windows }
+enum _OS { android, fuchsia, ios, linux, macos, windows, qnx }

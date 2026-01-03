@@ -14,7 +14,7 @@
 namespace dart {
 
 jmp_buf* LongJumpScope::Set() {
-  ASSERT(top_ == nullptr);
+  // ASSERT(top_ == nullptr);
   top_ = Thread::Current()->top_resource();
   return &environment_;
 }

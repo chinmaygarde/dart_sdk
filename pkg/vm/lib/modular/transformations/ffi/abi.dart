@@ -24,7 +24,7 @@ extension on _Architecture {
 }
 
 /// The operating systems the Dart VM runs on.
-enum _OS { android, fuchsia, ios, linux, macos, windows }
+enum _OS { android, fuchsia, ios, linux, macos, windows, qnx }
 
 /// An application binary interface (ABI).
 ///
@@ -106,6 +106,12 @@ class Abi {
   /// The application binary interface for Windows on the X64 architecture.
   static const windowsX64 = _windowsX64;
 
+  /// The application binary interface for QNX on the Arm64 architecture.
+  static const qnxArm64 = _qnxArm64;
+
+  /// The application binary interface for QNX on the X64 architecture.
+  static const qnxX64 = _qnxX64;
+
   /// The ABIs that the DartVM can run on, sorted alphabetically.
   ///
   /// Does not contain macosIA32, we stopped supporting it.
@@ -134,6 +140,8 @@ class Abi {
     linuxRiscv64,
     macosArm64,
     macosX64,
+    qnxArm64,
+    qnxX64,
     windowsArm64,
     windowsIA32,
     windowsX64,
@@ -181,6 +189,8 @@ class Abi {
   static const _windowsArm64 = Abi._(_Architecture.arm64, _OS.windows);
   static const _windowsIA32 = Abi._(_Architecture.ia32, _OS.windows);
   static const _windowsX64 = Abi._(_Architecture.x64, _OS.windows);
+  static const _qnxArm64 = Abi._(_Architecture.arm64, _OS.qnx);
+  static const _qnxX64 = Abi._(_Architecture.x64, _OS.qnx);
 }
 
 // Keep consistent with sdk/lib/ffi/abi.dart.
@@ -207,6 +217,8 @@ const Map<Abi, String> abiNames = {
   Abi.windowsArm64: 'windowsArm64',
   Abi.windowsIA32: 'windowsIA32',
   Abi.windowsX64: 'windowsX64',
+  Abi.qnxArm64: 'qnxArm64',
+  Abi.qnxX64: 'qnxX64',
 };
 
 /// The size of integer registers and memory addresses in bytes per [Abi].
@@ -255,6 +267,8 @@ const Map<Abi, Map<NativeType, int>> nonSizeAlignment = {
   Abi.linuxArm: _wordSize32Align64,
   Abi.linuxRiscv32: _wordSize32Align64,
   Abi.windowsIA32: _wordSize32Align64,
+  Abi.qnxArm64: _wordSize64,
+  Abi.qnxX64: _wordSize64,
 };
 
 // All 64 bit ABIs align struct fields to their size.

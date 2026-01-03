@@ -46,16 +46,16 @@ enum class Abi {
   kQNXX64,
 };
 
-const int64_t num_abis = static_cast<int64_t>(Abi::kWindowsX64) + 1;
+const int64_t num_abis = static_cast<int64_t>(Abi::kQNXX64) + 1;
 
 // We use the integer values of this enum in
 // - runtime/vm/compiler/ffi/native_type.cc
 // - runtime/vm/compiler/frontend/kernel_to_il.cc
 static_assert(static_cast<int64_t>(Abi::kAndroidArm) == 0,
               "Enum value unexpected.");
-static_assert(static_cast<int64_t>(Abi::kWindowsX64) == 21,
+static_assert(static_cast<int64_t>(Abi::kQNXX64) == 23,
               "Enum value unexpected.");
-static_assert(num_abis == 22, "Enum value unexpected.");
+static_assert(num_abis == 24, "Enum value unexpected.");
 
 // The target ABI. Defines sizes and alignment of native types.
 Abi TargetAbi();
